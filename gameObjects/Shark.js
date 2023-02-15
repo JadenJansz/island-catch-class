@@ -2,7 +2,7 @@ class Shark extends Phaser.GameObjects.Image {
 
     constructor(scene, x, y, scale, velocity, tweenX, tweenDuration){
         
-        super(scene, x, y, "shark1");
+        super(scene, x, y, "shark");
         scene.add.existing(this)
         scene.physics.world.enableBody(this);
         this.setScale(scale);

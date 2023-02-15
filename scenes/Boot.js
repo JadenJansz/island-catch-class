@@ -1,9 +1,10 @@
+
 class Boot extends Phaser.Scene {
     
     constructor() {
         super("boot")
         
-        this.count = true;
+        this.loadCount = true;
     }
 
     preload(){
@@ -50,7 +51,7 @@ class Boot extends Phaser.Scene {
         assetText.setOrigin(0.5, 0.5);
 
         this.load.on('progress', function (value) {
-            if(this.count){
+            if(this.loadCount){
                 percentText.text = (parseInt(value*100) + '%');
             }
             progressBox.x = 560
@@ -66,7 +67,7 @@ class Boot extends Phaser.Scene {
             // assetText.setText('Loading asset: ' + file.key);
         });
         this.load.on('complete', function () {
-            this.count = false
+            this.loadCount = false
             progressBar.destroy();
             progressBox.destroy();
             loadingText.destroy();
@@ -74,68 +75,57 @@ class Boot extends Phaser.Scene {
             assetText.destroy();
         });
         
-        this.load.image("frame", "assets/frame.png");
-        this.load.image("background", "assets/Background.png");
-        this.load.image("sky", "assets/sky.png");
-        this.load.image("land", "assets/land.png");
+        this.load.image("frame", "assets/images/frame.png");
+        this.load.image("background", "assets/images/background.png");
+        this.load.image("sky", "assets/images/sky.png");
+        this.load.image("land", "assets/images/land.png");
         this.load.spritesheet("helicopter", "assets/spritesheets/helicopterSpritesheet.png",{
             frameWidth: 399,
             frameHeight: 150
         });
-        this.load.spritesheet("splash", "assets/spritesheets/splash.png",{
+        this.load.spritesheet("splash", "assets/spritesheets/splashSpritesheet.png",{
             frameWidth: 200,
             frameHeight: 170
-        })
+        });
         this.load.spritesheet("bird", "assets/spritesheets/birdSpritesheet.png",{
             frameWidth: 190,
             frameHeight: 135
-        })
+        });
         this.load.spritesheet("boatSpriteLeft", "assets/spritesheets/boatSpritesheetLeft.png",{
             frameWidth: 315,
             frameHeight: 210
-        })
+        });
         this.load.spritesheet("boatSpriteRight", "assets/spritesheets/boatSpritesheetRight.png",{
             frameWidth: 315,
             frameHeight: 210
-        })
-        this.load.image("tree1", "assets/tree1.png")
-        this.load.image("tree2", "assets/tree2.png")
-        this.load.image("tree3", "assets/tree3.png")
+        });
 
-        this.load.image("mountains", "assets/Mountains.png")
-    
-        this.load.image("boat", "assets/Boat.png");
-        this.load.image("shark2", "assets/Boat.png");
-        this.load.image('platform', 'assets/platform.png');
-        this.load.image('platformLeft', 'assets/platform.png');
-        this.load.image('platformRight', 'assets/platform.png');
-        this.load.image("man", "assets/man.png");
-        this.load.image("heart", "assets/heart.png");
-        this.load.image("shark1", "assets/Fish.png");
-        this.load.image("mute", "assets/mute.png");
-        this.load.image("unmute", "assets/unmute.png");
-        this.load.audio("heli", "assets/helicopter.mp3");
-        this.load.audio("success", "assets/Success1.mp3");
-        this.load.audio("fail", "assets/fail.wav");
-        this.load.audio("splashSound", "assets/splashSound.mp3")
-        this.load.audio("music", "assets/beachMusic.mp3");
-        this.load.image("name", "assets/Title.png")
-        this.load.image("gameOverImage", "assets/gameOver.png")
-        this.load.image("startButton", "assets/Button.png")
-        this.load.image("ray", "assets/rays.png")
-        this.load.image("restart", "assets/restart.png")
-        this.load.image("bigWave", "assets/3.png")
-        this.load.image("mediumWave", "assets/2.png")
-        this.load.image("sparkles", "assets/sparkles.png")
+        this.load.image("tree1", "assets/images/tree1.png");
+        this.load.image("tree2", "assets/images/tree2.png");
+        this.load.image("tree3", "assets/images/tree3.png");
+        this.load.image("mountains", "assets/images/mountains.png")
+        this.load.image('platform', 'assets/images/platform.png');
+        this.load.image('platformLeft', 'assets/images/platform.png');
+        this.load.image('platformRight', 'assets/images/platform.png');
+        this.load.image("man", "assets/images/man.png");
+        this.load.image("heart", "assets/images/heart.png");
+        this.load.image("shark", "assets/images/shark.png");
+        this.load.image("mute", "assets/images/mute.png");
+        this.load.image("unmute", "assets/images/unmute.png");
+        this.load.image("name", "assets/images/Title.png");
+        this.load.image("gameOverImage", "assets/images/gameOver.png");
+        this.load.image("startButton", "assets/images/startButton.png");
+        this.load.image("restart", "assets/images/restartButton.png");
+        this.load.image("waves", "assets/images/boatWaves.png");
+        this.load.image("sparkles", "assets/images/sparkles.png");
 
-        this.load.bitmapFont("pixelFont", "assets/font/font.png", "assets/font/font.xml");
+        this.load.audio("helicopterAudio", "assets/audios/helicopter.mp3");
+        this.load.audio("successAudio", "assets/audios/success.mp3");
+        this.load.audio("splashSound", "assets/audios/splashAudio.mp3");
+        this.load.audio("music", "assets/audios/beachMusic.mp3");
     }
 
     create() {
-        this.physics.world.setBounds(420, 1594, 1050, 1980, true, true, false)
-                
-        
-
         this.anims.create({
             key: 'bird_anims',
             frames: this.anims.generateFrameNumbers("bird", {
