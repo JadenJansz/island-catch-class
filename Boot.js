@@ -2,34 +2,99 @@ class Boot extends Phaser.Scene {
     
     constructor() {
         super("boot")
+        
+        this.count = true;
     }
 
     preload(){
-        this.load.image("frame", "assets/frame_new.png");
+
+        var progressBar = this.add.graphics();
+        var progressBox = this.add.graphics();
+        progressBox.fillStyle(0x222222, 0.8);
+        progressBox.fillRect(240, 270, 320, 50);
+        
+        this.width = this.cameras.main.width;
+        this.height = this.cameras.main.height;
+
+        var loadingText = this.make.text({
+            x: this.width / 2,
+            y: this.height / 2 - 60,
+            text: 'Loading...',
+            style: {
+                font: '20px monospace',
+                fill: '#ffffff'
+            }
+        });
+        loadingText.setOrigin(0.5, 0.5);
+        
+        var percentText = this.make.text({
+            x: this.width / 2,
+            y: this.height / 2 - 5,
+            text: '0%',
+            style: {
+                font: '18px monospace',
+                fill: '#ffffff'
+            }
+        });
+        percentText.setOrigin(0.5, 0.5);
+
+        var assetText = this.make.text({
+        x: this.width / 2,
+        y: this.height / 2 + 50,
+        text: '',
+        style: {
+            font: '18px monospace',
+            fill: '#ffffff'
+        }
+        });
+        assetText.setOrigin(0.5, 0.5);
+
+        this.load.on('progress', function (value) {
+            if(this.count){
+                percentText.text = (parseInt(value*100) + '%');
+            }
+            progressBox.x = 560
+            progressBox.y = 195
+            progressBar.x = 560
+            progressBar.y = 195
+            progressBar.clear();
+            progressBar.fillStyle(0xffffff, 1);
+            progressBar.fillRect(250, 280, 300 * value, 30);
+        }, this);
+        
+        this.load.on('fileprogress', function (file) {
+            // assetText.setText('Loading asset: ' + file.key);
+        });
+        this.load.on('complete', function () {
+            this.count = false
+            progressBar.destroy();
+            progressBox.destroy();
+            loadingText.destroy();
+            percentText.destroy();
+            assetText.destroy();
+        });
+        
+        this.load.image("frame", "assets/frame.png");
         this.load.image("background", "assets/Background.png");
         this.load.image("sky", "assets/sky.png");
         this.load.image("land", "assets/land.png");
-        this.load.spritesheet("helicopter", "assets/spritesheet.png",{
+        this.load.spritesheet("helicopter", "assets/spritesheets/helicopterSpritesheet.png",{
             frameWidth: 399,
             frameHeight: 150
         });
-        this.load.spritesheet("splash", "assets/splash.png",{
+        this.load.spritesheet("splash", "assets/spritesheets/splash.png",{
             frameWidth: 200,
             frameHeight: 170
         })
-        this.load.spritesheet("bird", "assets/bird.png",{
+        this.load.spritesheet("bird", "assets/spritesheets/birdSpritesheet.png",{
             frameWidth: 190,
             frameHeight: 135
         })
-        this.load.spritesheet("boatS", "assets/waves.png",{
-            frameWidth: 1600,
-            frameHeight: 235
-        })
-        this.load.spritesheet("boatSpriteLeft", "assets/boatSpritesheetLeft.png",{
+        this.load.spritesheet("boatSpriteLeft", "assets/spritesheets/boatSpritesheetLeft.png",{
             frameWidth: 315,
             frameHeight: 210
         })
-        this.load.spritesheet("boatSpriteRight", "assets/boatSpritesheetRight.png",{
+        this.load.spritesheet("boatSpriteRight", "assets/spritesheets/boatSpritesheetRight.png",{
             frameWidth: 315,
             frameHeight: 210
         })
@@ -51,7 +116,6 @@ class Boot extends Phaser.Scene {
         this.load.image("unmute", "assets/unmute.png");
         this.load.audio("heli", "assets/helicopter.mp3");
         this.load.audio("success", "assets/Success1.mp3");
-        this.load.audio("fail", "assets/fail.wav");
         this.load.audio("fail", "assets/fail.wav");
         this.load.audio("splashSound", "assets/splashSound.mp3")
         this.load.audio("music", "assets/beachMusic.mp3");
@@ -81,18 +145,12 @@ class Boot extends Phaser.Scene {
             frameRate: 11,
             repeat: -1,
         })
-
-        
-        
-
-
-
-        
+     
         this.anims.create({
             key: "helicopter_anims",
             frames: this.anims.generateFrameNumbers("helicopter", {
                 start: 0,
-                end: 3
+                end: 2
             }),
             frameRate: 30,
             repeat: -1
@@ -113,7 +171,7 @@ class Boot extends Phaser.Scene {
             key: 'boat_anims_left',
             frames: this.anims.generateFrameNumbers("boatSpriteLeft", {
                 start: 0,
-                end: 2
+                end: 1
             }),
             frameRate: 7,
             repeat: -1,
@@ -123,12 +181,12 @@ class Boot extends Phaser.Scene {
             key: 'boat_anims_right',
             frames: this.anims.generateFrameNumbers("boatSpriteRight", {
                 start: 0,
-                end: 2
+                end: 1
             }),
             frameRate: 7,
             repeat: -1,
         })
 
-        this.scene.start("gameMenu");
+        this.scene.start("game");
     }
 }

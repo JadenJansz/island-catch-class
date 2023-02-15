@@ -6,11 +6,11 @@ var config = {
     physics: {
         default: "arcade",
         arcade: {
-            debug: false
+            debug: true
         }
     },
     scene: [
-        Loading, Boot, Menu, Game
+        Boot, Game
     ],
     scale: {
         mode: Phaser.Scale.ENVELOP,
